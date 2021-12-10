@@ -1,0 +1,13 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Ingredients.Protos"
+
+package ingredients;
+
+service IngredientsService {
+	rpc GetToppings(GetToppingsRequest) returns (GetToppingsResponse);
+}
+
+message GetToppingsRequest {}
+
+message GetToppingsResponse {}
