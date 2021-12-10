@@ -1,0 +1,75 @@
+using Grpc.Core;
+using Grpc.Net.Client;
+using Ingredients.Protos;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Xunit;
+
+namespace Ingredients.Tests;
+
+public class IngredientsTests : IClassFixture<IngredientsApplicationFactory>
+{
+    public readonly IngredientsService.IngredientsServiceClient _client;
+    public IngredientsTests(IngredientsApplicationFactory factory)
+    {
+        
+    }
+    [Fact]
+    public async void GetsToppings()
+    {
+        var request = new GetToppingsRequest();
+        var response = await _client.GetToppingsAsync(request);
+
+        Assert.Collection(response.Toppings, t =>
+        {
+            Assert.Equal("cheese", t.Id);
+        },
+        t =>
+        {
+            Assert.Equal("tomato", t.Id);
+        }
+        );
+    }
+    public void Dispose()
+    {
+        //_factory.Dispose();
+    }
+}
+public class IngredientsApplicationFactory : WebApplicationFactory<IngredientsMarker>
+{
+    
+    public IngredientsService.IngredientsServiceClient GetGrpcClient()
+    {
+        var http = CreateDefaultClient();
+        var channel = GrpcChannel.ForAddress(http.BaseAddress, new GrpcChannelOptions() {
+            HttpClient = http
+        });
+
+        return new Protos.IngredientsService.IngredientsServiceClient(channel);
+
+    }
+    
+
+    protected override void ConfigureWebHost(IWebHostBuilder builder)
+    {
+
+        /*
+        builder.ConfigureServices(services =>
+        {
+            
+            services.Remove<ToppingData>();
+            var toppingSub = NSubstitute.For<IToppingData>();
+
+            var toppings = new List<ToppingEntity> {
+                new("cheese", name: "cheese", price: .5d, stockCount: 10),
+                new("tomato", name: "Tomato", price: .5d, stockCount: 10)
+
+        };
+            toppingSub.GetAsync(Arg.Any(CancellationToken)).Returns(toppings);
+
+            Services.AddSingleton(toppingSub);
+            */
+
+        base.ConfigureWebHost(builder);
+    }
+}
