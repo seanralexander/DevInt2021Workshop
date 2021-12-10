@@ -1,6 +1,6 @@
-﻿namespace Ingredients
+﻿namespace Ingredients;
+
+public class IngredientsMarker
 {
-    public class IngredientsMarker
-    {
-    }
+    
 }
