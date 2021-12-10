@@ -21,14 +21,15 @@ public class HomeController : Controller
         var toppingsResponse = await _ingredients.GetToppingsAsync(new GetToppingsRequest());
         
         var toppings = toppingsResponse.Toppings
-            .Select(t => new ToppingViewModel(t.Id, t.Name, Convert.ToDecimal(string.IsNullOrEmpty(t.Price) ? "0" : t.Price)))
+            .Select(t => new ToppingViewModel(t.Id, t.Name, Convert.ToDecimal(t.Price)))
+            .ToList();
+
+        var crustsResponse = await _ingredients.GetCrustsAsync(new GetCrustsRequest());
+
+        var crusts = crustsResponse.Crusts
+            .Select(c => new CrustViewModel(c.Id, c.Name, c.Size, Convert.ToDecimal(c.Price)))
             .ToList();
         
-        var crusts = new List<CrustViewModel>
-        {
-            new("thin9", "Thin", 9, 5m),
-            new("deep9", "Deep", 9, 6m),
-        };
         var viewModel = new HomeViewModel(toppings, crusts);
         return View(viewModel);
     }
