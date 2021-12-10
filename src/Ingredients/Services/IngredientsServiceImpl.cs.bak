@@ -1,0 +1,55 @@
+﻿using Grpc.Core;
+//using Ingredients.Data;
+
+namespace Ingredients.Services
+{
+
+    public class IngredientsServiceImpl : IngredientsService.IngredientsServiceBase
+    {
+    }
+        /*
+        public class IngredientsServiceImpl : IngredientsService.IngredientsServiceBase
+        {
+            private readonly IToppingData _toppingData;
+            private readonly ILogger<IngredientsServiceImpl> _logger;
+
+            public IngredientsServiceImpl(IToppingData toppingData, ILogger<IngredientsServiceImpl> logger)
+            {
+                _toppingData = toppingData;
+                _logger = logger;
+            }
+
+            public override async Task<GetToppingsResponse> GetToppings(GetToppingsRequest request, Servercallcontext context)
+            {
+                try
+                {
+                    var toppings List<ToppingsEntity> = await _toppingData.getasync(context.cancellationtoken);
+                    var response = new GetToppingsResponse()
+                    {
+                        toppings =
+                        {
+                            toppings.Select(toppings.toppingentity => new Protos.topping
+                            {
+                                Id = toppings.Id,
+                                Name = toppings.Name,
+                                Price = toppings.Price
+                            })
+                        }
+                    };
+                    return response;
+                }
+                catch (OperationCanceledException)
+                {
+                    _logger.LogWarning("GetToppings cancelled");
+                    throw;
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError($"{ex.Message}");
+                    throw new RpcException(new Status(StatusCode.Internal, ex.Message));
+                }
+                return base.gettoppings(request, context);
+            }
+        }
+        */
+    }
